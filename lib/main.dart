@@ -122,8 +122,6 @@ class MyPicturePage extends StatefulWidget {
 class _MyPicturePageState extends State<MyPicturePage> {
    File _image;
   String base64Image;
-
-
  getData() async {
   Map data ={
   "requests": [{
@@ -131,21 +129,27 @@ class _MyPicturePageState extends State<MyPicturePage> {
       "content": base64Image
     },
     "features": [{
-      "maxResults": 10,
+      "maxResults": 1,
       "type": "LANDMARK_DETECTION"
     }]
   }]
   };
 
-String body = json.encode(data);
-
-http.Response response = await http.post(
-  'https://vision.googleapis.com/v1/images:annotate',
-  headers: {"Content-Type": "application/json","Authorization": "Bearer ya29.c.Ko8B0AcWVSYyNEwo3cAlASFMBUT3mzKqzTNEGlv6xDwsk59yiKrZbyQ1GmwyYrEyk7NwGDRNKnS0UODkxBSbr7MGQ892_rjBoRpar2bblRGtjhxpKeaKu4sUTxpFMgALzVyhwuAcj4Lcb3GQsWNX18F9WDSNPMFmLgPn4RPmu73GE1IlFqWo4XhoMEsHftaJCCA"},
-  body: body,
-);
-print(response.body);
-
+    String body = json.encode(data);
+    http.Response response = await http.post(
+      'https://vision.googleapis.com/v1/images:annotate',
+       headers: {"Content-Type": "application/json","Authorization": "Bearer ya29.c.Ko8B0AetyEPeJZVJm13h8p1ytFeiAjDlqy3X9SijDgN-5H4rRZKfoL41vneYM-0aS7OVVWnIqBre1mAZc0Kvhg0LjX2MLIcx-oyB3zWo7N530WWKlYIwX-aR1S1PI0hKup7TdXwaonUuBGv_8q34Z018dthsuBfHTmjb85XZ_iXLdj08ZTiLDoObWqzljd6kNWM"},
+        body: body,
+      );
+      if(response.statusCode==200 && response.body!=null){
+    print(response.body);
+    var value=json.decode(response.body);
+    var data1=value['responses'][0]['landmarkAnnotations'][0]['description'];
+    print(data1);
+      }
+      else{
+        print('No Landmark found take picture again');
+      }
  }
 
  
@@ -203,7 +207,7 @@ print(response.body);
   }
   Widget _isImage(){
     if(_image==null){
-      return Text('No Image Selected !');
+      return Text('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo Image Selected ! \n\n\n\n ');
     }
     else{
 
@@ -216,7 +220,7 @@ print(response.body);
       appBar: AppBar(
         title:Text('Image Detector')
       ),
-      body: Container(
+      body: Center(child: Column(children: <Widget>[Container(
         child:Center(child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[ 
@@ -224,15 +228,19 @@ print(response.body);
             RaisedButton(onPressed: (){
               _showChoiceDialog(context);
             },child: Text('Select Image !'),
-
             ),
-          
           ],
-
         ),
-
         ),
       ),
+
+      Container(
+        child:RaisedButton(
+          onPressed: () {},
+          child: Text('Get to know more'),
+        ),
+      )],),)
+
     );
   }
 }
