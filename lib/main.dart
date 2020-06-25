@@ -52,7 +52,7 @@ class App extends StatelessWidget{
               },),alignment: Alignment.bottomRight,
             ),
             Container(
-              child:Text('Copyrights \u00a9 santoshi meghana manisha')
+              child:Text('Copyrights \u00a9 C0B3B4')
             )
                 
           ])

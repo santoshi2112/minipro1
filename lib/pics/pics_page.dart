@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class MyPicturePage extends StatefulWidget {
   @override
@@ -11,6 +12,7 @@ class MyPicturePage extends StatefulWidget {
 class _MyPicturePageState extends State<MyPicturePage> {
    File _image;
    String name="";
+   String n2="";
   String base64Image;
   final TextStyle textStyleGreen=TextStyle(
   
@@ -35,18 +37,18 @@ class _MyPicturePageState extends State<MyPicturePage> {
     String body = json.encode(data);
     http.Response response = await http.post(
       'https://vision.googleapis.com/v1/images:annotate',
-       headers: {"Content-Type": "application/json","Authorization": "Bearer ya29.c.Ko8B0AcM1S0PloVPV0hiNcOQLRcQUEe7HSANixCXL54Lv0Pq6Dbm01t0U5UPSPK_WDvg7k3kcUJn7FFF_A6VVyUrXq_EBjo1wLCqBOzsr_y_irt772FYmPkE9OL6sQIf6eAMzAeZ8aNK9qMafsbjRlQlXf9gPDcsYKM6eDBgNot6b2iX_0Wav56L7Ut4VpmGwbc"},
-        body: body,
+       headers: {"Content-Type": "application/json","Authorization": "Bearer ya29.c.Ko8B0AdPUKc9_qz67nC2SD-KwSZwYF4ElUkeQNKRb13jC6DXy7DW05MlzS0UtTO9TQtD8pbniq77m4ppvQMq2JwBr-pKqPC8HkZxZuBCixTFiK2pHUyn8ii8BT1WPcEcWCRan-Qqm2p9ehm9yUgSYj718mNW86wED749FktjB3LrpK0C3pWcXT56DQiL0GyuUrg"},
+        body: body
       );
-      if(response.statusCode==200 && response.body!=null){
-    print(response.body);
     var value=json.decode(response.body);
+    if(response.statusCode==200){
+    print(response.body);
     var data1=value['responses'][0]['landmarkAnnotations'][0]['description'];
     print(data1);
     setState(() {
       name=data1.toString();
     });
-      }
+   }
       else{
         print('No Landmark found take picture again');
         setState(() {
@@ -81,6 +83,18 @@ class _MyPicturePageState extends State<MyPicturePage> {
     setState(() {
         });
     Navigator.of(context).pop();
+  }
+
+
+  _urlLaunch() async {
+    String val=name;
+    String url = 'https://en.wikipedia.org/wiki/$val';
+    if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    n2='Could not launch $url';
+    throw 'Could not launch $url';
+  }
   }
   Future<void> _showChoiceDialog(BuildContext context){
     return showDialog(context: context,builder: (BuildContext context){
@@ -146,10 +160,17 @@ class _MyPicturePageState extends State<MyPicturePage> {
       Container(
         margin: const EdgeInsets.all(5.0),
         child:RaisedButton(
-          onPressed: () {},
+          onPressed: () {
+            _urlLaunch();
+          },
           child: Text('Get to know more'),
         ),
-      )],),)
+      ),
+      Container(
+          child: Text('$n2'),
+      ),
+      ],)
+      ,)
 
     );
   }
