@@ -37,7 +37,7 @@ class _MyPicturePageState extends State<MyPicturePage> {
     String body = json.encode(data);
     http.Response response = await http.post(
       'https://vision.googleapis.com/v1/images:annotate',
-       headers: {"Content-Type": "application/json","Authorization": "Bearer ya29.c.Ko8B0AdPUKc9_qz67nC2SD-KwSZwYF4ElUkeQNKRb13jC6DXy7DW05MlzS0UtTO9TQtD8pbniq77m4ppvQMq2JwBr-pKqPC8HkZxZuBCixTFiK2pHUyn8ii8BT1WPcEcWCRan-Qqm2p9ehm9yUgSYj718mNW86wED749FktjB3LrpK0C3pWcXT56DQiL0GyuUrg"},
+       headers: {"Content-Type": "application/json","Authorization": "Bearer ya29.c.Ko8B0AcPbRlyW4SmKPaJvjI3RBThvtBk7VIDibcsV0_W8_NhK7bUiraytrJpMR-IafGguArgaeitg04YB3eHI5KPbwNpGG5Cxw7VHj2ipJpvUOZX06xT5GcQQdR4qyS4zpfYmfYjUww3aQ-IAcKm3pJBWTkdbIYqPXiL6kktPyhysFUqIKvwZgheKS8pZxwrvB8"},
         body: body
       );
     var value=json.decode(response.body);
@@ -59,6 +59,9 @@ class _MyPicturePageState extends State<MyPicturePage> {
 
  
   _openGallery(BuildContext context) async{
+    setState(() {
+      name="";
+    });
     _image = await ImagePicker.pickImage(source: ImageSource.gallery);
     List<int> imageBytes = _image.readAsBytesSync();
     print(imageBytes);
@@ -72,7 +75,11 @@ class _MyPicturePageState extends State<MyPicturePage> {
     Navigator.of(context).pop();
   }
   _openCamera(BuildContext context)async{
+    setState(() {
+      name="";
+    });
     _image = await ImagePicker.pickImage(source: ImageSource.camera);
+
     List<int> imageBytes = _image.readAsBytesSync();
     print(imageBytes);
     base64Image = base64Encode(imageBytes);
