@@ -59,5 +59,5 @@ class LocationService {
         weekdays
         );
   }
-//reviews.map((f)=> new Review.fromMap(f)).toList()
+
 }

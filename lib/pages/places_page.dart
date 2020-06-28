@@ -34,6 +34,11 @@ final _biggerFont = const TextStyle(fontSize: 18.0);
               title: new Text(f.name,style: _biggerFont,),
                leading: new Image.network(f.icon),
                subtitle: new Text(f.vicinity),
+               trailing: new Column(
+                 children :<Widget>[
+                 new Icon(Icons.star,color: Colors.yellow),
+                 new Text(f.rating)
+                 ]),
                 onTap: (){
                   _currentPlaceId = f.id;
                  // onItemTapped();
